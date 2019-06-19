@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+
+
+    <script type='text/javascript' src='js/jquery/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='js/jquery/globalize.js'></script>
+
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script>
+
+    <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script>
+
+    <script type='text/javascript' src='js/plugins.js'></script>
+    <script type='text/javascript' src='js/actions.js'></script>
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper" class="screen_wide sidebar_off">
+        <div id="layout">
+            <div id="content">
+                <div class="wrap nm">
+
+                    <div class="signin_block">
+                        <div class="row">
+                            <form id="app" @submit="checkForm" autocomplete="off">
+                                <p v-if="errors.length">
+                                    <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
+                                    <ul>
+                                        <li v-for="error in errors">{{ error }}</li>
+                                    </ul>
+                                </p>
+                                <div class="block">
+                                    <div class="head">
+                                        <h2>Entrar</h2>
+                                    </div>
+                                    <div class="content np">
+                                        <div class="controls-row">
+                                            <div class="col-md-3">Email:</div>
+                                            <div class="col-md-9"><input type="email" name="email" class="form-control"
+                                                    v-model="email" /></div>
+                                        </div>
+                                        <div class="controls-row">
+                                            <div class="col-md-3">Senha:</div>
+                                            <div class="col-md-9"><input type="password" name="pass"
+                                                    class="form-control" v-model="senha" /></div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <div class="side fr">
+                                            <input type="submit" name="btn-login" value="Login"
+                                                class="btn btn-primary" />
+                                        </div>
+                                    </div>
+
+
+                            </form>
+
+                            <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js"></script> -->
+
+                            <script>
+                                const app = new Vue({
+                                    el: '#app',
+                                    data: {
+                                        errors: [],
+                                        email: null,
+                                        senha: null,
+                                    },
+                                    created() {
+                                        if (this.$session.exists()) {
+                                            location.href = "index.html";
+                                        }
+                                    },
+                                    methods: {
+                                        checkForm: function (e) {
+
+                                            e.preventDefault();
+
+                                            this.errors = [];
+
+                                            if (!this.email) {
+                                                this.errors.push('O seu email é obrigatório.');
+                                            }
+                                            if (!this.senha) {
+                                                this.errors.push('A sua senha é obrigatória.');
+                                            }
+
+                                            if (this.errors.length > 1) {
+                                                return false;
+                                            }
+                                            else {
+                                                this.realizarLogin();
+                                            }
+
+                                        },
+                                        realizarLogin() {
+                                            vm = this;
+                                            console.log(this.$session);
+                                            this.errors = [];
+                                            let formData = new FormData();
+                                            formData.append('email', this.email);
+                                            formData.append('senha', this.senha);
+                                            axios.post('http://localhost:8080/api/login', formData, {
+                                                headers: {
+                                                    'Content-Type': 'multipart/form-data'
+                                                }
+                                            })
+                                                .then(function (response) {
+                                                    console.log(response.data);
+                                                    if (response.status === 200) {
+                                                        vm.$session.start();
+                                                        vm.$session.set('funcionario', JSON.stringify(response.data));
+                                                        location.href = "index.html";
+                                                    } else {
+                                                        vm.errors.push('Dados inválidos!');
+                                                    }
+                                                })
+                                                .catch(function (error) {
+                                                    console.log(error);
+                                                    vm.errors.push('Dados inválidos!');
+                                                });
+                                        }
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+
+</html>

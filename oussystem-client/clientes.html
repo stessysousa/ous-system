@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src='js/jquery/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='js/jquery/globalize.js'></script>
+
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script>
+
+    <script type='text/javascript' src='js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script type='text/javascript' src='js/charts/excanvas.min.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script>
+
+    <script type='text/javascript' src='js/datatables/jquery.dataTables.min.js'></script>
+
+    <script type='text/javascript' src='js/morris/raphael-min.js'></script>
+    <script type='text/javascript' src='js/morris/morris.min.js'></script>
+
+    <script type='text/javascript' src='js/sparklines/jquery.sparkline.min.js'></script>
+
+    <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script>
+
+    <script type='text/javascript' src='js/plugins.js'></script>
+    <script type='text/javascript' src='js/actions.js'></script>
+    <script type='text/javascript' src='js/charts.js'></script>
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js"></script> -->
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <div id="app">
+        <div id="wrapper" class="sidebar_off">
+
+            <div id="header">
+
+                <div class="wrap">
+                    <span class="logo"></span>
+                    <div class="buttons">
+                        <div class="item">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="layout">
+
+                <div id="content">
+                    <div class="wrap">
+
+                        <div class="head">
+                            <div class="head">
+                                <div class="info">
+                                    <h1>CLIENTES CADASTRADOS</h1>
+                                    <ul class="breadcrumb">
+                                        <li class="active">Página inicial</li>
+                                        <li class="active">Clientes</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="side fr">
+                                <a href="#reg" role="button" data-toggle="modal" class="btn btn-default btn-sm">
+                                    <font color="#607387"><i class="i-plus-4"></i> CADASTRAR CLIENTE </font>
+                                </a>
+                                <a href="index.html" class="btn btn-default btn-sm">
+                                    <font color="#607387"><i class="i-reply"></i> VOLTAR </font>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+
+
+
+                                    <div class="block">
+                                        <div class="content np table-sorting">
+                                            <table cellpadding="0" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="30%">
+                                                            <center>Nome do cliente</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Telefone</center>
+                                                        </th>
+                                                        <th width="20">
+                                                            <center>Cidade</center>
+                                                        </th>
+                                                        <th width="15%">
+                                                            <center>ID do cliente</center>
+                                                        </th>
+                                                        <th width="12%">
+                                                            <center>Opções</center>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="cliente in clientes">
+                                                        <td>{{cliente.nome}}</td>
+                                                        <td>{{cliente.telefone1}}</td>
+                                                        <td>{{cliente.cidade}}-{{cliente.estado}}</td>
+                                                        <td>{{cliente.id}}</td>
+                                                        <td>
+                                                            <center>
+                                                                <a href="#reg" @click="selecionarCliente(cliente)"
+                                                                    data-toggle="modal" class="btn btn-info btn-xs"
+                                                                    type="button">
+                                                                    Detalhes</a>
+
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- <tr>
+                                                        <td>MARIA APARECIDA</td>
+                                                        <td>88923751684</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>HJ072VKKVF</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=HJ072VKKVF"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>JAQUELINE RODRIGUES</td>
+                                                        <td>88976438543</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>LRGO0F3U84</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=LRGO0F3U84"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>CINTIA ALVES</td>
+                                                        <td>88947545625</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>2Y3ZF31UKH</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=2Y3ZF31UKH"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>TEREZINHA FEITOSA</td>
+                                                        <td>88728448472</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>UZZS3AGP8A</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=UZZS3AGP8A"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>LUCAS PEREIRA</td>
+                                                        <td>88983642843</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>9WHUVQYU5O</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=9WHUVQYU5O"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>LUANA COELHO</td>
+                                                        <td>88912345678</td>
+                                                        <td>CRATEÚS-CE</td>
+                                                        <td>AR5J81QM68</td>
+                                                        <td>
+                                                            <center><a href="?detalhes=AR5J81QM68"
+                                                                    class="btn btn-info btn-xs" type="button">
+                                                                    Detalhes</a>
+                                                            </center>
+                                                        </td>
+                                                    </tr> -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bootrstrap default dialog -->
+            <div class="modal fade" id="reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="col-md-11">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">&times;</button>
+                                <h3 class="modal-title" id="myModalLabel" v-if="!novoCliente.id">Registrar novo cliente
+                                </h3>
+                                <h3 class="modal-title" id="myModalLabel" v-if="novoCliente.id">Editar cliente</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="login__form" @submit="cadastrarCliente" autocomplete="off">
+                                    <div class="col-md-4">NOME DO CLIENTE:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" name="name" value=""
+                                            v-model="novoCliente.nome">
+                                    </div>
+                                    <div class="col-md-4">TELEFONE 1:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="contato_1" class="form-control" value=""
+                                            v-model="novoCliente.telefone1">
+                                    </div>
+                                    <div class="col-md-4">TELEFONE 2:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="contato_2" class="form-control" value=""
+                                            v-model="novoCliente.telefone2">
+                                    </div>
+                                    <div class="col-md-4">ESTADO:</div>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="estado" v-model="novoCliente.estado">
+                                            <option value="">Selecione o Estado</option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="TO">Tocantins</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">CIDADE:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="cidade" class="form-control" value=""
+                                            v-model="novoCliente.cidade">
+                                    </div>
+                                    <div class="col-md-4">ENDEREÇO / RUA:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="endereco" class="form-control" value=""
+                                            v-model="novoCliente.endereco">
+                                    </div>
+                                    <div class="col-md-4">N° DA CASA/AP:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="n_casa" class="form-control" value=""
+                                            v-model="novoCliente.numero">
+                                    </div>
+                                    <div class="col-md-4">BAIRRO:</div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="bairro" class="form-control" value=""
+                                            v-model="novoCliente.bairro">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                    <button class="btn btn-success" name="btn-cadastrar" type="submit"
+                                        v-if="!novoCliente.id">CADASTRAR
+                                        CLIENTE</button>
+                                    <button class="btn btn-success" name="btn-cadastrar" type="button"
+                                        v-if="novoCliente.id" @click="editarCliente">EDITAR
+                                        CLIENTE</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                flag: false,
+                funcionario: {},
+                clientes: [],
+                novoCliente: {
+                    nome: "",
+                    telefone1: "",
+                    telefone2: "",
+                    estado: "",
+                    cidade: "",
+                    endereco: "",
+                    numero: "",
+                    bairro: ""
+                }
+            },
+            created() {
+                if (!this.$session.exists()) {
+                    location.href = "login.html";
+                } else {
+                    this.funcionario = JSON.parse(this.$session.get('funcionario'));
+                    console.log(this.funcionario);
+                    this.flag = true;
+                    this.getClientes();
+                }
+            },
+            methods: {
+                getClientes: function () {
+                    vm = this;
+                    axios.get('http://localhost:8080/api/clientes')
+                        .then(function (response) {
+                            vm.clientes = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+
+                },
+                selecionarCliente: function (cliente) {
+                    this.novoCliente = cliente;
+                },
+                editarCliente: function (e) {
+                    e.preventDefault();
+                    // Verificar campos
+
+                    vm = this;
+                    let formData = new FormData();
+                    formData.append('id', this.novoCliente.id);
+                    formData.append('nome', this.novoCliente.nome);
+                    formData.append('telefone1', this.novoCliente.telefone1);
+                    formData.append('telefone2', this.novoCliente.telefone2);
+                    formData.append('estado', this.novoCliente.estado);
+                    formData.append('cidade', this.novoCliente.cidade);
+                    formData.append('endereco', this.novoCliente.endereco);
+                    formData.append('numero', this.novoCliente.numero);
+                    formData.append('bairro', this.novoCliente.bairro);
+
+                    axios.put('http://localhost:8080/api/clientes/' + this.novoCliente.id, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(function (response) {
+                        vm.novoCliente = {
+                            nome: "",
+                            telefone1: "",
+                            telefone2: "",
+                            estado: "",
+                            cidade: "",
+                            endereco: "",
+                            numero: "",
+                            bairro: ""
+                        };
+                        vm.getClientes();
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+                cadastrarCliente: function (e) {
+                    e.preventDefault();
+                    // Verificar campos
+
+                    vm = this;
+                    let formData = new FormData();
+                    formData.append('nome', this.novoCliente.nome);
+                    formData.append('telefone1', this.novoCliente.telefone1);
+                    formData.append('telefone2', this.novoCliente.telefone2);
+                    formData.append('estado', this.novoCliente.estado);
+                    formData.append('cidade', this.novoCliente.cidade);
+                    formData.append('endereco', this.novoCliente.endereco);
+                    formData.append('numero', this.novoCliente.numero);
+                    formData.append('bairro', this.novoCliente.bairro);
+
+                    axios.post('http://localhost:8080/api/clientes', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(function (response) {
+                        vm.novoCliente = {
+                            nome: "",
+                            telefone1: "",
+                            telefone2: "",
+                            estado: "",
+                            cidade: "",
+                            endereco: "",
+                            numero: "",
+                            bairro: ""
+                        };
+                        vm.getClientes();
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

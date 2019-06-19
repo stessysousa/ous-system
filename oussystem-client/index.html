@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+    <!-- <script type='text/javascript' src='js/jquery/jquery.min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/jquery/globalize.js'></script> -->
+
+    <script src="js/jquery.min.js"></script>
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <!-- <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script> -->
+
+    <!-- <script type='text/javascript' src='js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts/excanvas.min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts/jquery.flot.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script> -->
+
+    <!-- <script type='text/javascript' src='js/morris/raphael-min.js'></script> -->
+    <!-- <script type='text/javascript' src='js/morris/morris.min.js'></script> -->
+
+    <!-- <script type='text/javascript' src='js/sparklines/jquery.sparkline.min.js'></script> -->
+
+    <!-- <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script> -->
+
+    <!-- <script type='text/javascript' src='js/plugins.js'></script> -->
+    <!-- <script type='text/javascript' src='js/actions.js'></script> -->
+    <!-- <script type='text/javascript' src='js/charts.js'></script> -->
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="wrapper" class="sidebar_off">
+
+            <div id="header">
+
+                <div class="wrap">
+                    <span class="logo"></span>
+                    <div class="buttons">
+                        <div class="item">
+                            <a href="#" @click="realizarLogout" class="btn btn-primary btn-xs">
+                                <span class="i-togle"> SAIR </span>
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div id="layout">
+
+                <div id="content">
+                    <div class="wrap">
+
+                        <div class="head">
+                            <div class="info">
+                                <div class="side fl">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <img src="img/default-user.png" class="img-thumbnail" height="40px"
+                                                        width="40px">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <font color="#e9edf1">.</font>
+                                            </td>
+                                            <td>
+                                                <font color="#607387"><b> {{ funcionario.nome }}</b><br>
+                                                    <small>{{ funcionario.cargo }}</small></font>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="side fr">
+
+
+                                <a href="buscar_os.html" class="btn btn-default btn-sm">
+                                    <font color="#607387"><span class="i-magnifier"></span> BUSCAR O.S</font>
+                                </a>
+
+                                <a href="os.html" role="button" class="btn btn-default btn-sm">
+                                    <font color="#607387"><span class="i-plus-4"></span> ABRIR O.S</font>
+                                </a>
+
+                                <a href="clientes.html" class="btn btn-default btn-sm">
+                                    <font color="#607387"><span class="i-user"></span> CLIENTES</font>
+                                </a>
+                                |
+                                <a href="admin.html" class="btn btn-default btn-sm"
+                                    v-if="funcionario.cargo === 'Administrador'">
+                                    <font color="#607387"><span class="i-cog"></span> PAINEL DE CONTROLE</font>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="block">
+                                        <div class="content np">
+                                            <div class="pricing_heading">
+                                                <div class="price">
+                                                    {{osConcluida.length}} <br><span>Ordem de serviço(s)</span></div>
+                                                <div class="title_2">
+                                                    <center>Concluida (s)</center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="block">
+                                        <div class="content np">
+                                            <div class="pricing_heading">
+                                                <div class="price">
+                                                    {{osAberta.length}} <br><span>Ordem de serviço(s)</span></div>
+                                                <div class="title_3">
+                                                    <center>Aberta (s)</center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="block">
+                                        <div class="content np">
+                                            <div class="pricing_heading">
+                                                <div class="price">
+                                                    {{osAguardando.length}} <br><span>Ordem de serviço(s)</span></div>
+                                                <div class="title_5">
+                                                    <center>Aguardando(s)</center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="block">
+                                        <div class="content np">
+                                            <div class="pricing_heading">
+                                                <div class="price">
+                                                    {{osFechada.length}} <br><span>Ordem de serviço(s)</span></div>
+                                                <div class="title_4">
+                                                    <center>Fechada(s)</center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL BUSCAR O.S -->
+            <div class="modal fade" id="BuscaOS" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="col-md-11">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <div class="col-md-10">
+                                    <font color="#777">Por favor, informe o número da Ordem de serviço:</font><br>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" value="">
+                                    <br>
+                                </div>
+                                <a href="busca.html" class="btn btn-success" type="button"><i class="i-magnifier"></i>
+                                    BUSCAR O.S</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- MODAL ABRIR O.S -->
+            <div class="modal fade" id="AbrirOS" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="col-md-11">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <a href="clientes.html" class="btn btn-lg btn-block btn-success" type="button"><b>ABRIR
+                                        ORDEM DE SERVIÇO</b> <br>( O cliente já possui cadastro no sistema )</a>
+                                <a href="os.html" class="btn btn-lg btn-block btn-danger" type="button">ABRIR ORDEM DE
+                                    SERVIÇO E CADASTRAR CLIENTE<br>( O cliente ainda não possui cadastro no sistema
+                                    )</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                flag: false,
+                funcionario: {},
+                osConcluida: [],
+                osAberta: [],
+                osAguardando: [],
+                osFechada: []
+            },
+            created() {
+                if (!this.$session.exists()) {
+                    location.href = "login.html";
+                } else {
+                    this.funcionario = JSON.parse(this.$session.get('funcionario'));
+                    console.log(this.funcionario);
+                    this.flag = true;
+                    this.getOSs();
+                }
+            },
+            methods: {
+                realizarLogout: function () {
+                    this.$session.destroy();
+                    location.href = "login.html";
+                },
+                getOSs: function () {
+                    vm = this;
+                    axios.get('http://localhost:8080/api/os?status=Concluida')
+                        .then(function (response) {
+                            vm.osConcluida = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    axios.get('http://localhost:8080/api/os?status=Aberta')
+                        .then(function (response) {
+                            vm.osAberta = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    axios.get('http://localhost:8080/api/os?status=Aguardando')
+                        .then(function (response) {
+                            vm.osAguardando = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    axios.get('http://localhost:8080/api/os?status=Fechada')
+                        .then(function (response) {
+                            vm.osFechada = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

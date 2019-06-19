@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src='js/jquery/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='js/jquery/globalize.js'></script>
+
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script>
+
+    <script type='text/javascript' src='js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script type='text/javascript' src='js/charts/excanvas.min.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script>
+    <script type='text/javascript' src='js/datatables/jquery.dataTables.min.js'></script>
+
+    <script type='text/javascript' src='js/morris/raphael-min.js'></script>
+    <script type='text/javascript' src='js/morris/morris.min.js'></script>
+
+    <script type='text/javascript' src='js/sparklines/jquery.sparkline.min.js'></script>
+
+    <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script>
+
+    <script type='text/javascript' src='js/plugins.js'></script>
+    <script type='text/javascript' src='js/actions.js'></script>
+    <script type='text/javascript' src='js/charts.js'></script>
+
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+
+
+
+</head>
+
+<body>
+
+    <div id="app">
+        <div id="wrapper" class="sidebar_off">
+
+            <div id="header">
+
+                <div class="wrap">
+                    <span class="logo"></span>
+                    <div class="buttons">
+                        <div class="item">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="layout">
+
+                <div id="content">
+                    <div class="wrap">
+
+                        <div class="head">
+                            <div class="info">
+                                <h1>BUSCAR ORDEM DE SERVIÇO</h1>
+                                <ul class="breadcrumb">
+                                    <li class=""><a href="index.html">Página inicial</a></li>
+                                    <li class=""><a href="buscar_os.html">Ordem de serviço</a></li>
+                                    <li class="active">Buscar</li>
+                                </ul>
+                            </div>
+
+                            <div class="side fr">
+                                <a href="index.html" class="btn btn-default btn-sm">
+                                    <font color="#607387"><i class="i-reply"></i> VOLTAR </font>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+
+
+
+                                    <div class="block">
+                                        <div class="content np table-sorting">
+                                            <table cellpadding="0" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%">
+                                                            <center>OS</center>
+                                                        </th>
+                                                        <th width="30%">
+                                                            <center>Cliente</center>
+                                                        </th>
+                                                        <th width="10">
+                                                            <center>Aparelho</center>
+                                                        </th>
+                                                        <th width="15%">
+                                                            <center>Status</center>
+                                                        </th>
+                                                        <th width="15%">
+                                                            <center>Opções</center>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="os in OSs">
+                                                        <td>{{os.id}}</td>
+                                                        <td>{{os.cliente.nome}}</td>
+                                                        <td>{{os.aparelho}}</td>
+                                                        <td>
+                                                            <center>
+                                                                <span v-if="os.status === 'Aberta'"
+                                                                    class="label label-info">{{os.status}}</span>
+                                                                <span v-if="os.status === 'Concluida'"
+                                                                    class="label label-success">{{os.status}}</span>
+                                                                <span v-if="os.status === 'Fechada'"
+                                                                    class="label label-danger">{{os.status}}</span>
+                                                                <span v-if="os.status === 'Orçamento'"
+                                                                    class="label label-default">{{os.status}}</span>
+                                                                <span v-if="os.status === 'Aguardando'"
+                                                                    class="label label-warning">{{os.status}}</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=OWOGJCRNG6"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=OWOGJCRNG6&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=OWOGJCRNG6&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=OWOGJCRNG6&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=OWOGJCRNG6&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                        <td>6L1LNZ8BAX</td>
+                                                        <td>CINTIA ALVES</td>
+                                                        <td>Celular</td>
+                                                        <td>
+                                                            <center><span class="label label-success">Concluida</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=6L1LNZ8BAX"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=6L1LNZ8BAX&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=6L1LNZ8BAX&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=6L1LNZ8BAX&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=6L1LNZ8BAX&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EKEHUK6D9J</td>
+                                                        <td>JAQUELINE RODRIGUES</td>
+                                                        <td>Celular</td>
+                                                        <td>
+                                                            <center><span class="label label-info">Aberta</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=EKEHUK6D9J"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=EKEHUK6D9J&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=EKEHUK6D9J&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=EKEHUK6D9J&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=EKEHUK6D9J&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RXXL5UXY4L</td>
+                                                        <td>LUANA COELHO</td>
+                                                        <td>Celular</td>
+                                                        <td>
+                                                            <center><span class="label label-default">Orçamento</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=RXXL5UXY4L"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=RXXL5UXY4L&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RXXL5UXY4L&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RXXL5UXY4L&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RXXL5UXY4L&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RIL0KKKHB4</td>
+                                                        <td>CARLOS EDUARDO</td>
+                                                        <td>Notebook</td>
+                                                        <td>
+                                                            <center><span class="label label-danger">Fechada</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=RIL0KKKHB4"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=RIL0KKKHB4&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RIL0KKKHB4&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RIL0KKKHB4&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=RIL0KKKHB4&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>GF6OXGLJ9Y</td>
+                                                        <td>LUCAS PEREIRA</td>
+                                                        <td>Celular</td>
+                                                        <td>
+                                                            <center><span class="label label-success">Concluida</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=GF6OXGLJ9Y"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=GF6OXGLJ9Y&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=GF6OXGLJ9Y&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=GF6OXGLJ9Y&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=GF6OXGLJ9Y&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>FWHIU2643HI</td>
+                                                        <td>TEREZINHA FEITOSA</td>
+                                                        <td>Celular</td>
+                                                        <td>
+                                                            <center><span class="label label-warning">Aguardando</span>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" href="imprimir.html?os=FWHIU2643HI"
+                                                                    class="btn btn-default btn-xs" type="button"><i
+                                                                        class="i-printer"></i> </a>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-info btn-xs">STATUS</button>
+                                                                    <button class="btn btn-info dropdown-toggle btn-xs"
+                                                                        data-toggle="dropdown"
+                                                                        aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a
+                                                                                href="?os=FWHIU2643HI&status=Aberta">Aberta</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=FWHIU2643HI&status=Aguardando">Aguardando</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=FWHIU2643HI&status=Concluida">Concluida</a>
+                                                                        </li>
+                                                                        <li><a
+                                                                                href="?os=FWHIU2643HI&status=Fechada">Fechada</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </center>
+                                                        </td>
+                                                    </tr> -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                flag: false,
+                funcionario: {},
+                OSs: [],
+            },
+            created() {
+                if (!this.$session.exists()) {
+                    location.href = "login.html";
+                } else {
+                    this.funcionario = JSON.parse(this.$session.get('funcionario'));
+                    console.log(this.funcionario);
+                    this.flag = true;
+                    this.getOSs();
+                }
+            },
+            methods: {
+                getOSs: function () {
+                    vm = this;
+                    axios.get('http://localhost:8080/api/os')
+                        .then(function (response) {
+                            vm.OSs = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>
