@@ -40,7 +40,6 @@
                         <div class="row">
                             <form id="app" @submit="checkForm" autocomplete="off">
                                 <p v-if="errors.length">
-                                    <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
                                     <ul>
                                         <li v-for="error in errors">{{ error }}</li>
                                     </ul>

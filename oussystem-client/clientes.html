@@ -91,13 +91,8 @@
                         </div>
 
                         <div class="container">
-
                             <div class="row">
                                 <div class="col-md-12">
-
-
-
-
                                     <div class="block">
                                         <div class="content np table-sorting">
                                             <table cellpadding="0" cellspacing="0" width="100%">
@@ -129,6 +124,10 @@
                                                         <td>{{cliente.id}}</td>
                                                         <td>
                                                             <center>
+                                                                <a href="#" class="btn btn-danger btn-xs" type="button"
+                                                                    v-on:click="apagarCliente(cliente)"><i
+                                                                        class="i-trashcan"></i>
+                                                                </a>
                                                                 <a href="#reg" @click="selecionarCliente(cliente)"
                                                                     data-toggle="modal" class="btn btn-info btn-xs"
                                                                     type="button">
@@ -137,84 +136,6 @@
                                                             </center>
                                                         </td>
                                                     </tr>
-
-                                                    <!-- <tr>
-                                                        <td>MARIA APARECIDA</td>
-                                                        <td>88923751684</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>HJ072VKKVF</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=HJ072VKKVF"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>JAQUELINE RODRIGUES</td>
-                                                        <td>88976438543</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>LRGO0F3U84</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=LRGO0F3U84"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>CINTIA ALVES</td>
-                                                        <td>88947545625</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>2Y3ZF31UKH</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=2Y3ZF31UKH"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>TEREZINHA FEITOSA</td>
-                                                        <td>88728448472</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>UZZS3AGP8A</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=UZZS3AGP8A"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>LUCAS PEREIRA</td>
-                                                        <td>88983642843</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>9WHUVQYU5O</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=9WHUVQYU5O"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>LUANA COELHO</td>
-                                                        <td>88912345678</td>
-                                                        <td>CRATEÚS-CE</td>
-                                                        <td>AR5J81QM68</td>
-                                                        <td>
-                                                            <center><a href="?detalhes=AR5J81QM68"
-                                                                    class="btn btn-info btn-xs" type="button">
-                                                                    Detalhes</a>
-                                                            </center>
-                                                        </td>
-                                                    </tr> -->
 
                                                 </tbody>
                                             </table>
@@ -241,6 +162,12 @@
                                 <h3 class="modal-title" id="myModalLabel" v-if="novoCliente.id">Editar cliente</h3>
                             </div>
                             <div class="modal-body">
+                                <p v-if="errors.length">
+                                
+                                    <ul>
+                                        <li v-for="error in errors">{{ error }}</li>
+                                    </ul>
+                                </p>
                                 <form class="login__form" @submit="cadastrarCliente" autocomplete="off">
                                     <div class="col-md-4">NOME DO CLIENTE:</div>
                                     <div class="col-md-8">
@@ -335,6 +262,7 @@
                 flag: false,
                 funcionario: {},
                 clientes: [],
+                errors: [],
                 novoCliente: {
                     nome: "",
                     telefone1: "",
@@ -372,74 +300,144 @@
                 },
                 editarCliente: function (e) {
                     e.preventDefault();
-                    // Verificar campos
+                    this.errors = [];
 
-                    vm = this;
-                    let formData = new FormData();
-                    formData.append('id', this.novoCliente.id);
-                    formData.append('nome', this.novoCliente.nome);
-                    formData.append('telefone1', this.novoCliente.telefone1);
-                    formData.append('telefone2', this.novoCliente.telefone2);
-                    formData.append('estado', this.novoCliente.estado);
-                    formData.append('cidade', this.novoCliente.cidade);
-                    formData.append('endereco', this.novoCliente.endereco);
-                    formData.append('numero', this.novoCliente.numero);
-                    formData.append('bairro', this.novoCliente.bairro);
+                    if (!this.novoCliente.nome) {
+                        this.errors.push('Nome obrigatório.');
+                    }
+                    if (!this.novoCliente.telefone1) {
+                        this.errors.push('Telefone 1 obrigatório.');
+                    }
+                    if (!this.novoCliente.telefone2) {
+                        this.errors.push('Telefone 2 obrigatório.');
+                    }
+                    if (!this.novoCliente.estado) {
+                        this.errors.push('Estado obrigatório.');
+                    }
+                    if (!this.novoCliente.cidade) {
+                        this.errors.push('Cidade obrigatória.');
+                    }
+                    if (!this.novoCliente.endereco) {
+                        this.errors.push('Endereco obrigatório.');
+                    }
+                    if (!this.novoCliente.numero) {
+                        this.errors.push('Numero obrigatório.');
+                    }
+                    if (!this.novoCliente.bairro) {
+                        this.errors.push('Bairro obrigatório.');
+                    }
 
-                    axios.put('http://localhost:8080/api/clientes/' + this.novoCliente.id, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(function (response) {
-                        vm.novoCliente = {
-                            nome: "",
-                            telefone1: "",
-                            telefone2: "",
-                            estado: "",
-                            cidade: "",
-                            endereco: "",
-                            numero: "",
-                            bairro: ""
-                        };
-                        vm.getClientes();
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
+                    
+                    if(this.errors.length === 0) {
+
+                        vm = this;
+                        let formData = new FormData();
+                        formData.append('id', this.novoCliente.id);
+                        formData.append('nome', this.novoCliente.nome);
+                        formData.append('telefone1', this.novoCliente.telefone1);
+                        formData.append('telefone2', this.novoCliente.telefone2);
+                        formData.append('estado', this.novoCliente.estado);
+                        formData.append('cidade', this.novoCliente.cidade);
+                        formData.append('endereco', this.novoCliente.endereco);
+                        formData.append('numero', this.novoCliente.numero);
+                        formData.append('bairro', this.novoCliente.bairro);
+
+                        axios.put('http://localhost:8080/api/clientes/' + this.novoCliente.id, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(function (response) {
+                            vm.novoCliente = {
+                                nome: "",
+                                telefone1: "",
+                                telefone2: "",
+                                estado: "",
+                                cidade: "",
+                                endereco: "",
+                                numero: "",
+                                bairro: ""
+                            };
+                            vm.getClientes();
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    }
                 },
                 cadastrarCliente: function (e) {
                     e.preventDefault();
                     // Verificar campos
+                    this.errors = [];
 
-                    vm = this;
-                    let formData = new FormData();
-                    formData.append('nome', this.novoCliente.nome);
-                    formData.append('telefone1', this.novoCliente.telefone1);
-                    formData.append('telefone2', this.novoCliente.telefone2);
-                    formData.append('estado', this.novoCliente.estado);
-                    formData.append('cidade', this.novoCliente.cidade);
-                    formData.append('endereco', this.novoCliente.endereco);
-                    formData.append('numero', this.novoCliente.numero);
-                    formData.append('bairro', this.novoCliente.bairro);
+                    if (!this.novoCliente.nome) {
+                        this.errors.push('Nome obrigatório.');
+                    }
+                    if (!this.novoCliente.telefone1) {
+                        this.errors.push('Telefone 1 obrigatório.');
+                    }
+                    if (!this.novoCliente.telefone2) {
+                        this.errors.push('Telefone 2 obrigatório.');
+                    }
+                    if (!this.novoCliente.estado) {
+                        this.errors.push('Estado obrigatório.');
+                    }
+                    if (!this.novoCliente.cidade) {
+                        this.errors.push('Endereço obrigatório.');
+                    }
+                    if (!this.novoCliente.endereco) {
+                        this.errors.push('Sobrenome obrigatório.');
+                    }
+                    if (!this.novoCliente.numero) {
+                        this.errors.push('Numero obrigatório.');
+                    }
+                    if (!this.novoCliente.bairro) {
+                        this.errors.push('Bairro obrigatório.');
+                    }
 
-                    axios.post('http://localhost:8080/api/clientes', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(function (response) {
-                        vm.novoCliente = {
-                            nome: "",
-                            telefone1: "",
-                            telefone2: "",
-                            estado: "",
-                            cidade: "",
-                            endereco: "",
-                            numero: "",
-                            bairro: ""
-                        };
-                        vm.getClientes();
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
+                    if (this.errors.length > 1) {
+                        return false;
+                    }
+
+                    else {
+                        vm = this;
+                        let formData = new FormData();
+                        formData.append('nome', this.novoCliente.nome);
+                        formData.append('telefone1', this.novoCliente.telefone1);
+                        formData.append('telefone2', this.novoCliente.telefone2);
+                        formData.append('estado', this.novoCliente.estado);
+                        formData.append('cidade', this.novoCliente.cidade);
+                        formData.append('endereco', this.novoCliente.endereco);
+                        formData.append('numero', this.novoCliente.numero);
+                        formData.append('bairro', this.novoCliente.bairro);
+
+
+                        axios.post('http://localhost:8080/api/clientes', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(function (response) {
+                            vm.novoCliente = {
+                                nome: "",
+                                telefone1: "",
+                                telefone2: "",
+                                estado: "",
+                                cidade: "",
+                                endereco: "",
+                                numero: "",
+                                bairro: ""
+                            };
+                            vm.getClientes();
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+                },
+                apagarCliente: function (cliente) {
+                    axios.delete('http://localhost:8080/api/clientes/' + cliente.id)
+                        .then(function (response) {
+                            vm.getClientes();
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
                 }
             }
         });

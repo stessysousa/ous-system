@@ -42,9 +42,6 @@
 
 
 </head>
-
-
-
 <body>
 
     <div id="app">
@@ -65,10 +62,10 @@
                     <div class="wrap">
                         <div class="head">
                             <div class="info">
-                                <h1>ABRIR ORDEM DE SERVI�O</h1>
+                                <h1>ABRIR ORDEM DE SERVIÇO</h1>
                                 <ul class="breadcrumb">
-                                    <li class=""><a href="index.html">P�gina inicial</a></li>
-                                    <li class=""><a href="os.html">Ordem de servi�o</a></li>
+                                    <li class=""><a href="index.html">Página inicial</a></li>
+                                    <li class=""><a href="os.html">Ordem de serviço</a></li>
                                     <li class="active">Abrir </li>
                                 </ul>
                             </div>
@@ -79,16 +76,19 @@
                             </div>
                         </div>
 
-
-
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="block">
                                         <form @submit="salvarOs" autocomplete="off">
+                                            <p v-if="errors.length">
+                                                <ul>
+                                                    <li v-for="error in errors">{{ error }}</li>
+                                                </ul>
+                                            </p>
 
                                             <div class="head">
-                                                <h2>ABRIR ORDEM DE SERVI�O </h2>
+                                                <h2>ABRIR ORDEM DE SERVIÇO </h2>
                                             </div>
                                             <div class="content np">
                                                 <div class="controls-row">
@@ -138,29 +138,29 @@
                                                             <option value="AC">Acre</option>
                                                             <option value="AL">Alagoas</option>
                                                             <option value="AM">Amazonas</option>
-                                                            <option value="AP">Amap�</option>
+                                                            <option value="AP">Amapá</option>
                                                             <option value="BA">Bahia</option>
-                                                            <option value="CE">Cear�</option>
+                                                            <option value="CE">Ceará</option>
                                                             <option value="DF">Distrito Federal</option>
-                                                            <option value="ES">Esp�rito Santo</option>
-                                                            <option value="GO">Goi�s</option>
-                                                            <option value="MA">Maranh�o</option>
+                                                            <option value="ES">Espírito Santo</option>
+                                                            <option value="GO">Goiás</option>
+                                                            <option value="MA">Maranhão</option>
                                                             <option value="MT">Mato Grosso</option>
                                                             <option value="MS">Mato Grosso do Sul</option>
                                                             <option value="MG">Minas Gerais</option>
-                                                            <option value="PA">Par�</option>
-                                                            <option value="PB">Para�ba</option>
-                                                            <option value="PR">Paran�</option>
+                                                            <option value="PA">Pará</option>
+                                                            <option value="PB">Paraíba</option>
+                                                            <option value="PR">Paraná</option>
                                                             <option value="PE">Pernambuco</option>
-                                                            <option value="PI">Piau�</option>
+                                                            <option value="PI">Piauí</option>
                                                             <option value="RJ">Rio de Janeiro</option>
                                                             <option value="RN">Rio Grande do Norte</option>
-                                                            <option value="RO">Rond�nia</option>
+                                                            <option value="RO">Rondônia</option>
                                                             <option value="RS">Rio Grande do Sul</option>
                                                             <option value="RR">Roraima</option>
                                                             <option value="SC">Santa Catarina</option>
                                                             <option value="SE">Sergipe</option>
-                                                            <option value="SP">S�o Paulo</option>
+                                                            <option value="SP">São Paulo</option>
                                                             <option value="TO">Tocantins</option>
                                                         </select>
                                                     </div>
@@ -179,7 +179,7 @@
                                                             style="text-transform:uppercase"
                                                             v-model="clienteSelecionado.endereco">
                                                     </div>
-                                                    <div class="col-md-1"><b>N�:</b></div>
+                                                    <div class="col-md-1"><b>Nº:</b></div>
                                                     <div class="col-md-4">
                                                         <input type="text" name="os_ncasa_do_cliente"
                                                             class="form-control" value=""
@@ -259,13 +259,13 @@
                                                         <select class="form-control" name="os_status"
                                                             style="text-transform:uppercase" v-model="os.status">
                                                             <option>Selecione...</option>
-                                                            <option value="Orcamento">Orçamento</option>
+                                                            <option value="Aguardando">Aguardando</option>
                                                             <option value="Aberta">Aberta ( O cliente já autorizou o
                                                                 conserto )</option>
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-md-2"><b>Descri��o do defeito:</b></div>
+                                                    <div class="col-md-2"><b>Descrição do defeito:</b></div>
                                                     <div class="col-md-9">
                                                         <input type="text" name="os_defeito" class="form-control"
                                                             value="" style="text-transform:uppercase"
@@ -280,13 +280,13 @@
                                                     </div>
 
 
-                                                    <div class="col-md-2"><b>Servi�o a ser realizado:</b></div>
+                                                    <div class="col-md-2"><b>Serviço a ser realizado:</b></div>
                                                     <div class="col-md-6">
                                                         <input type="text" name="os_servico" class="form-control"
                                                             value="" style="text-transform:uppercase"
                                                             v-model="os.servico">
                                                     </div>
-                                                    <div class="col-md-1"><b>VALOR R$</b> </div>
+                                                    <div class="col-md-1"><b>Valor R$</b> </div>
                                                     <div class="col-md-2">
                                                         <input type="text" name="os_valor" class="form-control"
                                                             value="0,00" style="text-transform:uppercase"
@@ -299,25 +299,17 @@
                                                 <div class="side fr">
                                                     <button type="submit" class="btn btn-primary"
                                                         name="btn-cadastrar">ABRIR ORDEM DE
-                                                        SERVI�O</button>
+                                                        SERVIÇO</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
 
     </div>
@@ -328,6 +320,7 @@
                 flag: false,
                 funcionario: {},
                 clientes: [],
+                errors: [],
                 clienteSelecionado: {
                     nome: "",
                     telefone1: "",
@@ -375,52 +368,114 @@
                 },
                 salvarOs: function (e) {
                     e.preventDefault();
+
                     vm = this;
+                    this.errors = [];
 
-                    if (!this.clienteSelecionado.id) {
+
+                    // if (!this.clienteSelecionado.id){
+                    //     this.errors.push('Cliente obrigatório.');
+                    // }
+                    if (!this.clienteSelecionado.nome) {
+                        this.errors.push('Nome obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.telefone1) {
+                        this.errors.push('Telefone1 obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.telefone2) {
+                        this.errors.push('Telefone2 obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.estado) {
+                        this.errors.push('Estado obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.cidade) {
+                        this.errors.push('Cidade obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.endereco) {
+                        this.errors.push('Endereco obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.numero) {
+                        this.errors.push('numero obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.bairro) {
+                        this.errors.push('bairro obrigatório.');
+                    }
+                    if (!this.os.aparelho) {
+                        this.errors.push('Aparelho obrigatório.');
+                    }
+                    if (!this.os.marca) {
+                        this.errors.push('Marca obrigatório.');
+                    }
+                    if (!this.os.corAparelho) {
+                        this.errors.push('Cor do Aparelho obrigatório.');
+                    }
+                    if (!this.os.modelo) {
+                        this.errors.push('Modelo obrigatório.');
+                    }
+                    if (!this.os.status) {
+                        this.errors.push('Status obrigatório.');
+                    }
+                    if (!this.os.descricaoDefeito) {
+                        this.errors.push('Descricao Defeito obrigatório.');
+                    }
+                    if (!this.os.itensInclusos) {
+                        this.errors.push('Itens Inclusos obrigatório.');
+                    }
+                    if (!this.os.servico) {
+                        this.errors.push('Serviço obrigatório.');
+                    }
+                    if (!this.os.valor) {
+                        this.errors.push('Valor obrigatório.');
+                    }
+
+                    if (this.errors.length === 0) {
+
+                        if (!this.clienteSelecionado.id) {
+                            let formData = new FormData();
+                            formData.append('nome', this.clienteSelecionado.nome);
+                            formData.append('telefone1', this.clienteSelecionado.telefone1);
+                            formData.append('telefone2', this.clienteSelecionado.telefone2);
+                            formData.append('estado', this.clienteSelecionado.estado);
+                            formData.append('cidade', this.clienteSelecionado.cidade);
+                            formData.append('endereco', this.clienteSelecionado.endereco);
+                            formData.append('numero', this.clienteSelecionado.numero);
+                            formData.append('bairro', this.clienteSelecionado.bairro);
+
+                            axios.post('http://localhost:8080/api/clientes', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function (response) {
+                                vm.clienteSelecionado = response.data;
+                            }).catch(function (error) {
+                                console.log(error);
+                            });
+                        }
+
+
                         let formData = new FormData();
-                        formData.append('nome', this.clienteSelecionado.nome);
-                        formData.append('telefone1', this.clienteSelecionado.telefone1);
-                        formData.append('telefone2', this.clienteSelecionado.telefone2);
-                        formData.append('estado', this.clienteSelecionado.estado);
-                        formData.append('cidade', this.clienteSelecionado.cidade);
-                        formData.append('endereco', this.clienteSelecionado.endereco);
-                        formData.append('numero', this.clienteSelecionado.numero);
-                        formData.append('bairro', this.clienteSelecionado.bairro);
+                        formData.append('idCliente', this.clienteSelecionado.id);
+                        formData.append('aparelho', this.os.aparelho);
+                        formData.append('marca', this.os.marca);
+                        formData.append('corAparelho', this.os.corAparelho);
+                        formData.append('modelo', this.os.modelo);
+                        formData.append('status', this.os.status);
+                        formData.append('descricaoDefeito', this.os.descricaoDefeito);
+                        formData.append('itensInclusos', this.os.itensInclusos);
+                        formData.append('servico', this.os.servico);
+                        formData.append('valor', this.os.valor);
 
-                        axios.post('http://localhost:8080/api/clientes', formData, {
+                        axios.post('http://localhost:8080/api/os', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
-                        }).then(function (response) {
-                            vm.clienteSelecionado = response.data;
+                        }
+                        ).then(function (response) {
+                            location.href = "buscar_os.html"
                         }).catch(function (error) {
                             console.log(error);
                         });
                     }
-
-                    let formData = new FormData();
-                    formData.append('idCliente', this.clienteSelecionado.id);
-                    formData.append('aparelho', this.os.aparelho);
-                    formData.append('marca', this.os.marca);
-                    formData.append('corAparelho', this.os.corAparelho);
-                    formData.append('modelo', this.os.modelo);
-                    formData.append('status', this.os.status);
-                    formData.append('descricaoDefeito', this.os.descricaoDefeito);
-                    formData.append('itensInclusos', this.os.itensInclusos);
-                    formData.append('servico', this.os.servico);
-                    formData.append('valor', this.os.valor);
-
-                    axios.post('http://localhost:8080/api/os', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }
-                    ).then(function (response) {
-                        location.href="buscar_os.html"
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
 
 
                 }

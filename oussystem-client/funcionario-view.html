@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+
+    <script type='text/javascript' src='js/jquery/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='js/jquery/globalize.js'></script>
+
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script>
+
+    <script type='text/javascript' src='js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script type='text/javascript' src='js/charts/excanvas.min.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script>
+
+    <script type='text/javascript' src='js/morris/raphael-min.js'></script>
+    <script type='text/javascript' src='js/morris/morris.min.js'></script>
+
+    <script type='text/javascript' src='js/sparklines/jquery.sparkline.min.js'></script>
+
+    <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script>
+
+    <script type='text/javascript' src='js/plugins.js'></script>
+    <script type='text/javascript' src='js/actions.js'></script>
+    <script type='text/javascript' src='js/charts.js'></script>
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="wrapper">
+
+            <div id="header">
+
+                <div class="wrap">
+                    <span class="logo"></span>
+                    <div class="buttons">
+                        <div class="item">
+                            <a href="index.html" class="btn btn-primary btn-xs">
+                                <span class="i-forward"></span>SAIR DO PAINEL
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="layout">
+                <div id="sidebar">
+                    <ul class="navigation">
+                        <li class="openable open">
+                            <a href="#">PAINEL DE CONTROLE</a>
+                            <ul>
+                                <li class="">
+                                    <a href="admin.html">Página Inicial</a>
+                                </li>
+                                <li class="active">
+                                    <a href="funcionario-inserir.html">Cadastrar Funcionários</a>
+                                </li>
+                                <li class="active">
+                                    <a href="funcionario-view.html">Visualizar Funcionários</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+                <div id="content">
+                    <div class="wrap">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="block">
+                                        <div class="content np table-sorting">
+                                            <table cellpadding="0" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="20%">
+                                                            <center>Nome</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Sobrenome</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Contato</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Email</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Senha</center>
+                                                        </th>
+                                                        <th width="20%">
+                                                            <center>Cargo</center>
+                                                        </th>
+                                                        <td width="20%">
+                                                            <center>Opções</center>
+                                                        </td>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="funcionario in funcionarios">
+                                                        <td>{{funcionario.nome}}</td>
+                                                        <td>{{funcionario.sobrenome}}</td>
+                                                        <td>{{funcionario.contato}}</td>
+                                                        <td>{{funcionario.email}}</td>
+                                                        <td>{{funcionario.senha}}</td>
+                                                        <td>{{funcionario.cargo}}</td>
+                                                        <td>
+                                                            <center>                                
+                                                                <a href="#" class="btn btn-danger btn-xs" type="button"
+                                                                    v-on:click="apagarFuncionario(funcionario)"><i
+                                                                        class="i-trashcan"></i>
+                                                                </a>
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script>
+                var app = new Vue({
+                    el: "#app",
+                    data: {
+                        flag: false,
+                        funcionario: {},
+                        funcionarios: [],
+                        errors: [],
+                        novoFuncionario: {
+                            nome: "",
+                            sobrenome: "",
+                            contato: "",
+                            email: "",
+                            senha:"",
+                            cargo: ""
+                        }
+                    },
+                    created() {
+                        if (!this.$session.exists()) {
+                            location.href = "login.html";
+                        } else {
+                            this.funcionario = JSON.parse(this.$session.get('funcionario'));
+                            console.log(this.funcionario);
+                            this.flag = true;
+                            this.getFuncionarios();
+                        }
+                    },
+                    methods: {
+                        getFuncionarios: function () {
+                            vm = this;
+                            axios.get('http://localhost:8080/api/funcionarios')
+                                .then(function (response) {
+                                    vm.funcionarios = response.data;
+                                }).catch(function (error) {
+                                    console.log(error);
+                                });
+                        },
+                        selecionarCliente: function (funcionario) {
+                            this.novoFuncionario = funcionario;
+                        },
+                        editarFuncionario: function (e) {
+                            e.preventDefault();
+                            this.errors = [];
+
+                            if (!this.novoFuncionario.nome) {
+                                this.errors.push('Nome obrigatório.');
+                            }
+                            if (!this.novoFuncionario.sobrenome) {
+                                this.errors.push('Sobrenome obrigatório.');
+                            }
+                            if (!this.novoFuncionario.contato) {
+                                this.errors.push('Contato obrigatório.');
+                            }
+                            if (!this.novoFuncionario.email) {
+                                this.errors.push('Email obrigatório.');
+                            }
+                            if (!this.novoFuncionario.senha) {
+                                this.errors.push('Senha obrigatória.');
+                            }
+                            if (!this.novoFuncionario.cargo) {
+                                this.errors.push('Cargo obrigatório.');
+                            }
+
+
+                            if (this.errors.length === 0) {
+
+                                vm = this;
+                                let formData = new FormData();
+                                formData.append('id', this.novoFuncionario.id);
+                                formData.append('nome', this.novoFuncionario.nome);
+                                formData.append('sobrneome', this.novoFuncionario.sobrenome);
+                                formData.append('contato', this.novoFuncionario.contato);
+                                formData.append('email', this.novoFuncionario.email);
+                                formData.append('senha', this.novoFuncionario.senha);
+                                formData.append('cargo', this.novoFuncionario.cargo);
+
+                                axios.put('http://localhost:8080/api/funcionarios/' + this.novoFuncionario.id, formData, {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
+                                }).then(function (response) {
+                                    vm.novoFuncionario = {
+                                        nome: "",
+                                        sobrenome: "",
+                                        contato: "",
+                                        email: "",
+                                        senha:"",
+                                        cargo: ""
+                                    };
+                                    vm.getFuncionarios();
+                                }).catch(function (error) {
+                                    console.log(error);
+                                });
+                            }
+                        },
+
+                        apagarFuncionario: function (funcionario) {
+                            axios.delete('http://localhost:8080/api/funcionarios/' + funcionario.id)
+                                .then(function (response) {
+                                    vm.getFuncionarios();
+                                }).catch(function (error) {
+                                    console.log(error);
+                                });
+                        }
+
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</body>

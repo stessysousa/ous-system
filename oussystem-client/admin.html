@@ -77,22 +77,19 @@
                                     <a href="admin.html">Página Inicial</a>
                                 </li>
                                 <li>
-                                    <a href="c_funcionario.html">Cadastrar Funcionários</a>
+                                    <a href="funcionario-inserir.html">Cadastrar Funcionários</a>
+                                </li>
+                                <li>
+                                    <a href="funcionario-view.html">Visualizar Funcionários</a>
                                 </li>
                             </ul>
                         </li>
-
-
-
                     </ul>
-
                 </div>
 
                 <div id="content">
                     <div class="wrap">
-
                         <div class="container">
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="block">
@@ -114,23 +111,23 @@
                                                         <td>
                                                             Abertas
                                                             <div class="side fr">
-                                                              {{osAberta.length}} </div>
+                                                                {{osAberta.length}} </div>
                                                             <br>
                                                             Fechadas
                                                             <div class="side fr">
-                                                               {{osFechada.length}} </div>
+                                                                {{osFechada.length}} </div>
                                                             <br>
-                                                            Concluidas
+                                                            Concluídas
                                                             <div class="side fr">
-                                                              {{osConcluida.length}} </div>
+                                                                {{osConcluida.length}} </div>
                                                             <br>
-                                                            Orçamento
+                                                            Aguardando
                                                             <div class="side fr">
                                                                 {{osAguardando.length}} </div>
                                                             <hr>
                                                             TOTAL
                                                             <div class="side fr">
-                                                                7 </div>
+                                                                {{osTodas.length}} </div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -144,21 +141,19 @@
 
                                         </div>
                                         <div class="content np">
-
                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                 <tbody>
                                                     <tr>
                                                         <td>Clientes cadastrados:</td>
-                                                        <td>10</td>
+                                                        <td>{{clientes.length}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Funcionários cadastrados:</td>
-                                                        <td>4</td>
+                                                        <td>{{funcionarios.length}}</td>
                                                     </tr>
+
                                                 </tbody>
                                             </table>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -167,12 +162,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-
 </body>
 
 <script>
@@ -184,7 +176,10 @@
             osConcluida: [],
             osAberta: [],
             osAguardando: [],
-            osFechada: []
+            osFechada: [],
+            osTodas: [],
+            clientes: [],
+            funcionarios: []
         },
         created() {
             if (!this.$session.exists()) {
@@ -227,7 +222,24 @@
                     }).catch(function (error) {
                         console.log(error);
                     });
-
+                axios.get('http://localhost:8080/api/os')
+                    .then(function (response) {
+                        vm.osTodas = response.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                axios.get('http://localhost:8080/api/clientes')
+                    .then(function (response) {
+                        vm.clientes = response.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                axios.get('http://localhost:8080/api/funcionarios')
+                    .then(function (response) {
+                        vm.funcionarios = response.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     });
