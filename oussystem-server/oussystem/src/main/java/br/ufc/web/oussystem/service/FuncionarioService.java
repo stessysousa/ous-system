@@ -30,7 +30,10 @@ public class FuncionarioService {
 		if (nome == null || sobrenome == null || contato == null || email == null || senha == null || cargo == null) {
 			return new ResponseEntity<Funcionario>(HttpStatus.BAD_REQUEST);
 		}
-
+		
+		Funcionario func = funcionarioRepository.findByEmail(email);
+		if(func != null) return new ResponseEntity<Funcionario>(HttpStatus.CONFLICT);
+		
 		Funcionario funcionario = new Funcionario(nome, sobrenome, contato, email, senha, cargo);
 
 		funcionario = funcionarioRepository.save(funcionario);

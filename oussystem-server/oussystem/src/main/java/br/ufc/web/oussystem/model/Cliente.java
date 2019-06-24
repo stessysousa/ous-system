@@ -110,8 +110,5 @@ public class Cliente {
 	}
 	public void setBairro(String bairro) {
 		this.bairro = bairro;
-	}
-	
-	
-	
+	}	
 }

@@ -264,6 +264,10 @@
 
                             };
                         }).catch(function (error) {
+                            vm.errors = [];
+                            if(error.response.status === 409){
+                                vm.errors.push('Já existe funcionário em este email.');
+                            }
                             console.log(error);
                         });
                     }
