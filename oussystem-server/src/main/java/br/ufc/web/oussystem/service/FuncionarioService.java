@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufc.web.oussystem.model.Funcionario;
@@ -53,6 +54,18 @@ public class FuncionarioService {
 
 		Funcionario funcionario = optional.get();
 		return new ResponseEntity<Funcionario>(funcionario, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/search")
+	public ResponseEntity<List<Funcionario>> getFuncionarioByNome(@RequestParam("nome") String nome) {
+		System.out.println(nome);
+		List<Funcionario> funcionarioList = funcionarioRepository.findByNome(nome);
+
+		if (funcionarioList != null) {
+			return new ResponseEntity<List<Funcionario>>(funcionarioList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")

@@ -69,11 +69,22 @@ public class OSService {
 		return new ResponseEntity<OS>(os, HttpStatus.OK);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/search")
+	public ResponseEntity<List<OS>> getOsByAparelho(@RequestParam("modelo") String modelo) {
+		System.out.println(modelo);
+		List<OS> osList = osRepository.findByModelo(modelo);
+
+		if (osList != null) {
+			return new ResponseEntity<List<OS>>(osList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
-	public ResponseEntity<OS> updateOS(@PathVariable("id") Integer id, Cliente cliente, String aparelho, String marca,
+	public ResponseEntity<OS> updateOS(@PathVariable("id") Integer id, Integer idCliente, String aparelho, String marca,
 			String corAparelho, String modelo, String status, String descricaoDefeito, String itensInclusos,
 			String servico, Double valor) {
-		if (id == null || cliente == null || aparelho == null || marca == null || corAparelho == null || modelo == null
+		if (id == null || idCliente == null || aparelho == null || marca == null || corAparelho == null || modelo == null
 				|| status == null || descricaoDefeito == null || itensInclusos == null || servico == null
 				|| valor == null) {
 			return new ResponseEntity<OS>(HttpStatus.BAD_REQUEST);
@@ -84,6 +95,8 @@ public class OSService {
 		if (!optional.isPresent()) {
 			return new ResponseEntity<OS>(HttpStatus.NOT_FOUND);
 		}
+		
+		Cliente cliente = clienteRepository.findById(idCliente).get();
 
 		OS os = new OS(id, cliente, aparelho, marca, corAparelho, modelo, status, descricaoDefeito, itensInclusos,
 				servico, valor);

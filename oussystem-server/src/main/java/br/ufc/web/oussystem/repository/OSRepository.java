@@ -11,5 +11,7 @@ public interface OSRepository extends JpaRepository<OS, Integer>{
 
 	@Query("from OS where status = ?1")
 	List<OS> findByStatus(String status);
+	@Query("from OS where modelo like %?1%")
+	List<OS> findByModelo(String modelo);
 	
 }

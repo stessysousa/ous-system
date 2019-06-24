@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufc.web.oussystem.model.Cliente;
@@ -53,6 +54,18 @@ public class ClienteService {
 
 		Cliente cliente = optional.get();
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/search")
+	public ResponseEntity<List<Cliente>> getClienteByNome(@RequestParam("nome") String nome) {
+		System.out.println(nome);
+		List<Cliente> clienteList = clienteRepository.findByNome(nome);
+
+		if (clienteList != null) {
+			return new ResponseEntity<List<Cliente>>(clienteList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
