@@ -34,7 +34,7 @@
     <script type='text/javascript' src='js/plugins.js'></script>
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/charts.js'></script>
-    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js"></script> -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/httpVueLoader.js"></script>
     <script src="js/vue-router.js"></script>
@@ -45,12 +45,9 @@
 </head>
 
 <body>
-
     <div id="app">
         <div id="wrapper" class="sidebar_off">
-
-            <div id="header">
-
+             <div id="header">
                 <div class="wrap">
                     <span class="logo"></span>
                     <div class="buttons">
@@ -58,16 +55,11 @@
 
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
             <div id="layout">
-
                 <div id="content">
                     <div class="wrap">
-
                         <div class="head">
                             <div class="head">
                                 <div class="info">
@@ -77,7 +69,6 @@
                                         <li class="active">Clientes</li>
                                     </ul>
                                 </div>
-
                             </div>
                             <div class="side fr">
                                 <a href="#reg" role="button" data-toggle="modal" class="btn btn-default btn-sm">
@@ -94,6 +85,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="block">
+                                        <input type="text" class="form-control" name="busca" value=""
+                                            placeholder="Pesquisar por nome" style="width: 400px" v-model="busca">
+                                        <button type="button" class="btn btn-primary" value="Buscar"
+                                            v-on:click="buscar()" id="buscar">Buscar</button>
+                                        <br> <br>
                                         <div class="content np table-sorting">
                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                 <thead>
@@ -163,7 +159,7 @@
                             </div>
                             <div class="modal-body">
                                 <p v-if="errors.length">
-                                
+
                                     <ul>
                                         <li v-for="error in errors">{{ error }}</li>
                                     </ul>
@@ -260,9 +256,11 @@
             el: "#app",
             data: {
                 flag: false,
+                url: "http://localhost:8080/api/clientes",
                 funcionario: {},
                 clientes: [],
                 errors: [],
+                busca: '',
                 novoCliente: {
                     nome: "",
                     telefone1: "",
@@ -327,8 +325,7 @@
                         this.errors.push('Bairro obrigatório.');
                     }
 
-                    
-                    if(this.errors.length === 0) {
+                    if (this.errors.length === 0) {
 
                         vm = this;
                         let formData = new FormData();
@@ -431,6 +428,16 @@
                         });
                     }
                 },
+                buscar: function () {
+                    vm = this;
+                    console.log(this.busca);
+                    axios.get(this.url + "/search?nome=" + this.busca).then(function (r) {
+                        console.log(r.data);
+                        vm.clientes = r.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    })
+                },
                 apagarCliente: function (cliente) {
                     axios.delete('http://localhost:8080/api/clientes/' + cliente.id)
                         .then(function (response) {
@@ -442,7 +449,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>

@@ -21,6 +21,7 @@
     <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script>
     <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script>
     <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script>
+
     <script type='text/javascript' src='js/datatables/jquery.dataTables.min.js'></script>
 
     <script type='text/javascript' src='js/morris/raphael-min.js'></script>
@@ -40,17 +41,12 @@
     <script src="js/vue-session.js"></script>
     <script src="js/axios.min.js"></script>
 
-
-
 </head>
 
 <body>
-
     <div id="app">
         <div id="wrapper" class="sidebar_off">
-
             <div id="header">
-
                 <div class="wrap">
                     <span class="logo"></span>
                     <div class="buttons">
@@ -58,16 +54,12 @@
 
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <div id="layout">
-
                 <div id="content">
                     <div class="wrap">
-
                         <div class="head">
                             <div class="info">
                                 <h1>BUSCAR ORDEM DE SERVIÇO</h1>
@@ -89,6 +81,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="block">
+                                        <input type="text" class="form-control" name="busca" value=""
+                                            placeholder="Pesquisar por modelo" style="width: 400px" v-model="busca">
+                                        <button type="button" class="btn btn-primary" value="Buscar"
+                                            v-on:click="buscar()" id="buscar">Buscar</button>
+                                        <br> <br>
                                         <div class="content np table-sorting">
                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                 <thead>
@@ -134,6 +131,9 @@
                                                                 <a href="#" class="btn btn-danger btn-xs" type="button"
                                                                     v-on:click="apagarOs(os)"><i class="i-trashcan"></i>
                                                                 </a>
+                                                                <a href="#" class="btn btn-warning btn-xs" type="button"
+                                                                    v-on:click="editarOS(os)"><i class="i-pencil"></i>
+                                                                </a>
                                                                 <a href="#reg" v-on:click="mostrarOS(os)"
                                                                     data-toggle="modal" class="btn btn-info btn-xs"
                                                                     type="button">
@@ -173,47 +173,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="modal-body">
-                    <p v-if="errors.length">
-                    
-                        <ul>
-                            <li v-for="error in errors">{{ error }}</li>
-                        </ul>
-                    </p>
-                    <form class="login__form" @submit="editarOs" autocomplete="off">
-                        <div class="col-md-4">Aparelho</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" name="name" value=""
-                                v-model="novaOs.aparelho">
-                        </div>
-                        <div class="col-md-4">Marca</div>
-                        <div class="col-md-8">
-                            <input type="text" name="marca" class="form-control" value=""
-                                v-model="novaOs.marca">
-                        </div>
-                        <div class="col-md-4">Cor do Aparelho</div>
-                        <div class="col-md-8">
-                            <input type="text" name="corAparelho" class="form-control" value=""
-                                v-model="novaOs.corAparelho">
-                        </div>
-                        <div class="col-md-4">Modelo</div>
-                        <div class="col-md-8">
-                            <input type="text" name="modelo" class="form-control" value=""
-                                v-model="novaOs.modelo">
-                        </div>
-                        <div class="col-md-4">status</div>
-                        <div class="col-md-8">
-                            <input type="text" name="status" class="form-control" value=""
-                                v-model="novaOs.status">
-                        </div>
-        
-                        <button class="btn btn-success" name="btn-cadastrar" type="button"
-                            v-if="novaOs.id" @click="editarCliente">EDITAR
-                            CLIENTE
-                        </button>
-
-                    </form>
-                </div> -->
         </div>
         <!-- Bootrstrap default dialog -->
         <div class="modal fade" id="reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -273,10 +232,12 @@
         var app = new Vue({
             el: "#app",
             data: {
+                url: "http://localhost:8080/api/os",
                 flag: false,
                 funcionario: {},
                 OSs: [],
-                os: {}
+                os: {},
+                busca: ''
             },
             created() {
                 if (!this.$session.exists()) {
@@ -301,6 +262,9 @@
                 },
                 mostrarOS: function (os) {
                     this.os = os;
+                },
+                editarOS: function (os) {
+                    location.href = "os-editar.html?id=" + os.id;
                 },
                 mudaStatus: function (os, status) {
                     vm = this;
@@ -333,6 +297,16 @@
                         }).catch(function (error) {
                             console.log(error);
                         });
+                },
+                buscar: function () {
+                    vm = this;
+                    console.log(this.busca);
+                    axios.get(this.url + "/search?modelo=" + this.busca).then(function (r) {
+                        console.log(r.data);
+                        vm.OSs = r.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    })
                 },
 
 

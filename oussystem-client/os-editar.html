@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OuS System</title>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src='js/jquery/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/jquery/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='js/jquery/globalize.js'></script>
+
+    <script type='text/javascript' src='js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='js/cookies/jquery.cookies.2.2.0.min.js'></script>
+
+    <script type='text/javascript' src='js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script type='text/javascript' src='js/charts/excanvas.min.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.stack.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='js/charts/jquery.flot.resize.js'></script>
+
+    <script type='text/javascript' src='js/morris/raphael-min.js'></script>
+    <script type='text/javascript' src='js/morris/morris.min.js'></script>
+
+    <script type='text/javascript' src='js/sparklines/jquery.sparkline.min.js'></script>
+
+    <script type='text/javascript' src='js/scrollup/jquery.scrollUp.min.js'></script>
+
+    <script type='text/javascript' src='js/plugins.js'></script>
+    <script type='text/javascript' src='js/actions.js'></script>
+    <script type='text/javascript' src='js/charts.js'></script>
+
+    <script src="js/vue.js"></script>
+    <script src="js/httpVueLoader.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vue-session.js"></script>
+    <script src="js/axios.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <div id="app">
+        <div id="wrapper" class="sidebar_off">
+            <div id="header">
+                <div class="wrap">
+                    <span class="logo"></span>
+                    <div class="buttons">
+                        <div class="item">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="layout">
+                <div id="content">
+                    <div class="wrap">
+                        <div class="head">
+                            <div class="info">
+                                <h1>ABRIR ORDEM DE SERVIÇO</h1>
+                                <ul class="breadcrumb">
+                                    <li class=""><a href="index.html">Página inicial</a></li>
+                                    <li class=""><a href="os.html">Ordem de serviço</a></li>
+                                    <li class="active">Abrir </li>
+                                </ul>
+                            </div>
+                            <div class="side fr">
+                                <a href="index.html" class="btn btn-default btn-sm">
+                                    <font color="#607387"><i class="i-reply"></i>CANCELAR </font>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="block">
+                                        <form @submit="salvarOs" autocomplete="off">
+                                            <p v-if="errors.length">
+                                                <ul>
+                                                    <li v-for="error in errors">{{ error }}</li>
+                                                </ul>
+                                            </p>
+
+                                            <div class="head">
+                                                <h2>ABRIR ORDEM DE SERVIÇO </h2>
+                                            </div>
+                                            <div class="content np">
+                                                <div class="controls-row">
+                                                    <div class="col-md-2"><b>Cliente:</b></div>
+                                                    <div class="col-md-9">
+                                                        <select class="form-control" name="os_cliente"
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado">
+                                                            <option>Selecione...</option>
+                                                            <option v-for="cliente in clientes" v-bind:value="cliente">
+                                                                {{cliente.nome}}</option>
+                                                            <!-- <option value="Branco">Branco</option>
+                                                            <option value="Prata">Prata</option>
+                                                            <option value="Dourado">Dourado</option>
+                                                            <option value="Rose">Rose</option>
+                                                            <option value="Roxo">Roxo</option>
+                                                            <option value="Outro">Outro</option> -->
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2"><b>Nome do cliente:</b></div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="os_nome_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.nome">
+                                                    </div>
+                                                    <div class="col-md-2"><b>Telefone 1:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_contato_1_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.telefone1">
+                                                    </div>
+                                                    <div class="col-md-1"><b>Telefone 2:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_contato_2_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.telefone2">
+                                                    </div><br>
+                                                    <div class="col-md-2"><b>Estado:</b></div>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" name="os_estado_do_cliente"
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.estado">
+                                                            <option value="">Selecione</option>
+                                                            <option value="AC">Acre</option>
+                                                            <option value="AL">Alagoas</option>
+                                                            <option value="AM">Amazonas</option>
+                                                            <option value="AP">Amapá</option>
+                                                            <option value="BA">Bahia</option>
+                                                            <option value="CE">Ceará</option>
+                                                            <option value="DF">Distrito Federal</option>
+                                                            <option value="ES">Espírito Santo</option>
+                                                            <option value="GO">Goiás</option>
+                                                            <option value="MA">Maranhão</option>
+                                                            <option value="MT">Mato Grosso</option>
+                                                            <option value="MS">Mato Grosso do Sul</option>
+                                                            <option value="MG">Minas Gerais</option>
+                                                            <option value="PA">Pará</option>
+                                                            <option value="PB">Paraíba</option>
+                                                            <option value="PR">Paraná</option>
+                                                            <option value="PE">Pernambuco</option>
+                                                            <option value="PI">Piauí</option>
+                                                            <option value="RJ">Rio de Janeiro</option>
+                                                            <option value="RN">Rio Grande do Norte</option>
+                                                            <option value="RO">Rondônia</option>
+                                                            <option value="RS">Rio Grande do Sul</option>
+                                                            <option value="RR">Roraima</option>
+                                                            <option value="SC">Santa Catarina</option>
+                                                            <option value="SE">Sergipe</option>
+                                                            <option value="SP">São Paulo</option>
+                                                            <option value="TO">Tocantins</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1"><b>Cidade:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_cidade_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.cidade">
+                                                    </div>
+
+                                                    <div class="col-md-2"><b>Rua:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_endereco_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.endereco">
+                                                    </div>
+                                                    <div class="col-md-1"><b>Nº:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_ncasa_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.numero">
+                                                    </div>
+                                                    <div class="col-md-2"><b>Bairro:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_bairro_do_cliente"
+                                                            class="form-control" value=""
+                                                            style="text-transform:uppercase"
+                                                            v-model="clienteSelecionado.bairro">
+                                                    </div>
+
+                                                </div>
+                                                <div class="controls-row">
+
+                                                </div>
+                                                <div class="controls-row">
+                                                    <div class="col-md-2"><b>Aparelho:</b></div>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" name="os_aparelho"
+                                                            style="text-transform:uppercase" v-model="os.aparelho">
+                                                            <option>Selecione...</option>
+                                                            <option value="Computador">Computador</option>
+                                                            <option value="Notebook">Notebook</option>
+                                                            <option value="Celular">Celular</option>
+                                                            <option value="Tablet">Tablet</option>
+                                                            <option value="Telefone rural">Telefone rural</option>
+                                                            <option value="Outro">Outro</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1"><b>Marca:</b></div>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" name="os_marca"
+                                                            style="text-transform:uppercase" v-model="os.marca">
+                                                            <option>Selecione...</option>
+                                                            <option value="Apple">Apple</option>
+                                                            <option value="Asus">Asus</option>
+                                                            <option value="Acer">Acer</option>
+                                                            <option value="Alcatel">Alcatel</option>
+                                                            <option value="Samsung">Samsung</option>
+                                                            <option value="LG">LG</option>
+                                                            <option value="Motorola">Motorola</option>
+                                                            <option value="Multilaser">Multilaser</option>
+                                                            <option value="Microsoft">Microsoft</option>
+                                                            <option value="Xiaomi">Xiaomi</option>
+                                                            <option value="Outro">Outro</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2"><b>Cor do aparelho:</b></div>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" name="os_cor_do_aparelho"
+                                                            style="text-transform:uppercase" v-model="os.corAparelho">
+                                                            <option>Selecione...</option>
+                                                            <option value="Preto">Preto</option>
+                                                            <option value="Branco">Branco</option>
+                                                            <option value="Prata">Prata</option>
+                                                            <option value="Dourado">Dourado</option>
+                                                            <option value="Rose">Rose</option>
+                                                            <option value="Roxo">Roxo</option>
+                                                            <option value="Outro">Outro</option>
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="col-md-2"><b>Modelo:</b></div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="os_modelo" class="form-control"
+                                                            value="" style="text-transform:uppercase"
+                                                            v-model="os.modelo">
+                                                    </div>
+
+
+                                                    <div class="col-md-1"><b>Status:</b></div>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" name="os_status"
+                                                            style="text-transform:uppercase" v-model="os.status">
+                                                            <option>Selecione...</option>
+                                                            <option value="Aguardando">Aguardando</option>
+                                                            <option value="Aberta">Aberta ( O cliente já autorizou o
+                                                                conserto )</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-2"><b>Descrição do defeito:</b></div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="os_defeito" class="form-control"
+                                                            value="" style="text-transform:uppercase"
+                                                            v-model="os.descricaoDefeito">
+                                                    </div>
+
+                                                    <div class="col-md-2"><b>Itens inclusos:</b></div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="os_defeito" class="form-control"
+                                                            value="" style="text-transform:uppercase"
+                                                            v-model="os.itensInclusos">
+                                                    </div>
+
+
+                                                    <div class="col-md-2"><b>Serviço a ser realizado:</b></div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="os_servico" class="form-control"
+                                                            value="" style="text-transform:uppercase"
+                                                            v-model="os.servico">
+                                                    </div>
+                                                    <div class="col-md-1"><b>Valor R$</b> </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" name="os_valor" class="form-control"
+                                                            value="0,00" style="text-transform:uppercase"
+                                                            v-model="os.valor">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="footer">
+                                                <div class="side fr">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        name="btn-cadastrar">EDITAR ORDEM DE
+                                                        SERVIÇO</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                flag: false,
+                funcionario: {},
+                clientes: [],
+                errors: [],
+                clienteSelecionado: {
+                    nome: "",
+                    telefone1: "",
+                    telefone2: "",
+                    estado: "",
+                    cidade: "",
+                    endereco: "",
+                    numero: "",
+                    bairro: ""
+                },
+                os: {
+                    cliente: {},
+                    aparelho: "",
+                    marca: "",
+                    corAparelho: "",
+                    modelo: "",
+                    status: "",
+                    descricaoDefeito: "",
+                    itensInclusos: "",
+                    servico: "",
+                    valor: 0,
+
+                }
+            },
+            created() {
+                if (!this.$session.exists()) {
+                    location.href = "login.html";
+                } else {
+                    this.funcionario = JSON.parse(this.$session.get('funcionario'));
+                    console.log(this.funcionario);
+                    this.flag = true;
+                    this.getClientes();
+                    var currentUrl = window.location.href;
+                    var id = new URL(currentUrl).searchParams.get("id");
+                    vm = this;
+                    axios.get('http://localhost:8080/api/os/' + id).then(function (r) {
+                        vm.os = r.data;
+                        vm.clienteSelecionado = vm.os.cliente;
+                        vm.flag = true;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            },
+            methods: {
+                getClientes: function () {
+                    vm = this;
+                    axios.get('http://localhost:8080/api/clientes')
+                        .then(function (response) {
+                            vm.clientes = response.data;
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+
+                },
+                salvarOs: function (e) {
+                    e.preventDefault();
+
+                    vm = this;
+                    this.errors = [];
+
+
+                    // if (!this.clienteSelecionado.id){
+                    //     this.errors.push('Cliente obrigatório.');
+                    // }
+                    if (!this.clienteSelecionado.nome) {
+                        this.errors.push('Nome obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.telefone1) {
+                        this.errors.push('Telefone1 obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.telefone2) {
+                        this.errors.push('Telefone2 obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.estado) {
+                        this.errors.push('Estado obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.cidade) {
+                        this.errors.push('Cidade obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.endereco) {
+                        this.errors.push('Endereco obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.numero) {
+                        this.errors.push('numero obrigatório.');
+                    }
+                    if (!this.clienteSelecionado.bairro) {
+                        this.errors.push('bairro obrigatório.');
+                    }
+                    if (!this.os.aparelho) {
+                        this.errors.push('Aparelho obrigatório.');
+                    }
+                    if (!this.os.marca) {
+                        this.errors.push('Marca obrigatório.');
+                    }
+                    if (!this.os.corAparelho) {
+                        this.errors.push('Cor do Aparelho obrigatório.');
+                    }
+                    if (!this.os.modelo) {
+                        this.errors.push('Modelo obrigatório.');
+                    }
+                    if (!this.os.status) {
+                        this.errors.push('Status obrigatório.');
+                    }
+                    if (!this.os.descricaoDefeito) {
+                        this.errors.push('Descricao Defeito obrigatório.');
+                    }
+                    if (!this.os.itensInclusos) {
+                        this.errors.push('Itens Inclusos obrigatório.');
+                    }
+                    if (!this.os.servico) {
+                        this.errors.push('Serviço obrigatório.');
+                    }
+                    if (!this.os.valor) {
+                        this.errors.push('Valor obrigatório.');
+                    }
+
+                    if (this.errors.length === 0) {
+
+                        if (!this.clienteSelecionado.id) {
+                            let formData = new FormData();
+                            
+                            formData.append('nome', this.clienteSelecionado.nome);
+                            formData.append('telefone1', this.clienteSelecionado.telefone1);
+                            formData.append('telefone2', this.clienteSelecionado.telefone2);
+                            formData.append('estado', this.clienteSelecionado.estado);
+                            formData.append('cidade', this.clienteSelecionado.cidade);
+                            formData.append('endereco', this.clienteSelecionado.endereco);
+                            formData.append('numero', this.clienteSelecionado.numero);
+                            formData.append('bairro', this.clienteSelecionado.bairro);
+
+                            axios.post('http://localhost:8080/api/clientes', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function (response) {
+                                vm.clienteSelecionado = response.data;
+                            }).catch(function (error) {
+                                console.log(error);
+                            });
+                        }
+
+
+                        let formData = new FormData();
+                        formData.append('idCliente', this.clienteSelecionado.id);
+                        formData.append('aparelho', this.os.aparelho);
+                        formData.append('marca', this.os.marca);
+                        formData.append('corAparelho', this.os.corAparelho);
+                        formData.append('modelo', this.os.modelo);
+                        formData.append('status', this.os.status);
+                        formData.append('descricaoDefeito', this.os.descricaoDefeito);
+                        formData.append('itensInclusos', this.os.itensInclusos);
+                        formData.append('servico', this.os.servico);
+                        formData.append('valor', this.os.valor);
+                        formData.append('id', this.os.id);
+
+                        axios.put('http://localhost:8080/api/os/'+this.os.id, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }
+                        ).then(function (response) {
+                            location.href = "buscar_os.html"
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+
+
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

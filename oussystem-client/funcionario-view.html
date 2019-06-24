@@ -90,6 +90,12 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
+                                    <br> <br>
+                                    <input type="text" class="form-control" name="busca" value=""
+                                        placeholder="Pesquisar por modelo" style="width: 400px" v-model="busca">
+                                    <button type="button" class="btn btn-primary" value="Buscar" v-on:click="buscar()"
+                                        id="buscar">Buscar</button>
+                                    <br> <br>
                                     <div class="block">
                                         <div class="content np table-sorting">
                                             <table cellpadding="0" cellspacing="0" width="100%">
@@ -113,9 +119,9 @@
                                                         <th width="20%">
                                                             <center>Cargo</center>
                                                         </th>
-                                                        <td width="20%">
+                                                        <th width="20%">
                                                             <center>Opções</center>
-                                                        </td>
+                                                        </th>
 
                                                     </tr>
                                                 </thead>
@@ -128,10 +134,14 @@
                                                         <td>{{funcionario.senha}}</td>
                                                         <td>{{funcionario.cargo}}</td>
                                                         <td>
-                                                            <center>                                
+                                                            <center>
                                                                 <a href="#" class="btn btn-danger btn-xs" type="button"
                                                                     v-on:click="apagarFuncionario(funcionario)"><i
                                                                         class="i-trashcan"></i>
+                                                                </a>
+                                                                <a href="#" class="btn btn-warning btn-xs" type="button"
+                                                                    v-on:click="editarFuncionario(funcionario)"><i
+                                                                        class="i-pencil"></i>
                                                                 </a>
                                                             </center>
                                                         </td>
@@ -161,9 +171,10 @@
                             sobrenome: "",
                             contato: "",
                             email: "",
-                            senha:"",
+                            senha: "",
                             cargo: ""
-                        }
+                        },
+                        busca: '',
                     },
                     created() {
                         if (!this.$session.exists()) {
@@ -188,60 +199,19 @@
                         selecionarCliente: function (funcionario) {
                             this.novoFuncionario = funcionario;
                         },
-                        editarFuncionario: function (e) {
-                            e.preventDefault();
-                            this.errors = [];
+                        editarFuncionario: function (funcionario) {
+                            location.href = "funcionario-editar.html?id="+funcionario.id;
+                        },
 
-                            if (!this.novoFuncionario.nome) {
-                                this.errors.push('Nome obrigatório.');
-                            }
-                            if (!this.novoFuncionario.sobrenome) {
-                                this.errors.push('Sobrenome obrigatório.');
-                            }
-                            if (!this.novoFuncionario.contato) {
-                                this.errors.push('Contato obrigatório.');
-                            }
-                            if (!this.novoFuncionario.email) {
-                                this.errors.push('Email obrigatório.');
-                            }
-                            if (!this.novoFuncionario.senha) {
-                                this.errors.push('Senha obrigatória.');
-                            }
-                            if (!this.novoFuncionario.cargo) {
-                                this.errors.push('Cargo obrigatório.');
-                            }
-
-
-                            if (this.errors.length === 0) {
-
-                                vm = this;
-                                let formData = new FormData();
-                                formData.append('id', this.novoFuncionario.id);
-                                formData.append('nome', this.novoFuncionario.nome);
-                                formData.append('sobrneome', this.novoFuncionario.sobrenome);
-                                formData.append('contato', this.novoFuncionario.contato);
-                                formData.append('email', this.novoFuncionario.email);
-                                formData.append('senha', this.novoFuncionario.senha);
-                                formData.append('cargo', this.novoFuncionario.cargo);
-
-                                axios.put('http://localhost:8080/api/funcionarios/' + this.novoFuncionario.id, formData, {
-                                    headers: {
-                                        'Content-Type': 'multipart/form-data'
-                                    }
-                                }).then(function (response) {
-                                    vm.novoFuncionario = {
-                                        nome: "",
-                                        sobrenome: "",
-                                        contato: "",
-                                        email: "",
-                                        senha:"",
-                                        cargo: ""
-                                    };
-                                    vm.getFuncionarios();
-                                }).catch(function (error) {
-                                    console.log(error);
-                                });
-                            }
+                        buscar: function () {
+                            vm = this;
+                            console.log(this.busca);
+                            axios.get('http://localhost:8080/api/funcionarios/search?nome=' + this.busca).then(function (r) {
+                                console.log(r.data);
+                                vm.funcionarios = r.data;
+                            }).catch(function (error) {
+                                console.log(error);
+                            })
                         },
 
                         apagarFuncionario: function (funcionario) {
